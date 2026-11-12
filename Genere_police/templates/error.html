@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Error</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href='{% static "css/Styles.css" %}' rel='stylesheet'>
+</head>
+<body class="global-log">
+    <div class="error-container">
+        <div class="form-box_erreur">
+            <div class="error-message">{{ error_message }}</div>
+            <div class="error-details">{{ error_details }}</div>
+            <a href="{{ redirect_url }}" class="back-link">Retour à la page de connexion</a>
+            <div>
+                <img src="{% static 'img/401.png' %}" class="img-error">
+            </div>
+        </div>
+        <div class="toggle-box_error">
+            <div class="toggle-panel toggle-left">
+                <div class="div-logo-aroLog">
+                    <img src="{% static 'img/logo_ARO.png' %}" class="logo-aroLog">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

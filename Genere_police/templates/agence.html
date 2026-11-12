@@ -1,0 +1,128 @@
+{% extends "Dashboard.html" %}
+
+
+{% block contenu %}
+    {% comment %} PopUpAddagence {% endcomment %}
+
+    <div id="PopupAddagence" class="modal">
+        <div class="modal-content">
+            <span id="cancelAddagence" class="close">&times;</span>
+            <h2>Ajouter une agence</h2>
+            <form id="addAgenceForm" class="formPop">
+                {% csrf_token %}
+                <label for="nom_agence">Nom de l'agence :</label>
+                <input type="text" id="nom_agence" placeholder="Entrer le nom de l'agence" required>
+                <br>
+                <label for ="ville">Villes :</label>
+                <select name="ville" id="ville" required>
+                    <option value="" disabled selected>Choisissez une ville</option>
+                    <option value="Antananarivo">Antananarivo</option>
+                    <option value="Antsirabe">Antsirabe</option>
+                    <option value="Diego">Diego</option>
+                    <option value="Mahajanga">Mahajanga</option>
+                    <option value="Toamasina">Toamasina</option>
+                    <option value="Toliara">Toliara</option>
+                </select>
+                <br>
+                <button type="submit">Ajouter l'agence</button>
+            </form>
+        </div>
+    </div>
+
+    {% comment %} PopUpModifagence {% endcomment %}
+
+    <div id="PopupModifAgence" class="modal">
+        <div class="modal-content">
+            <span id="cancelModifAgence" class="close">&times;</span>
+            <h2>Modifier l'agence</h2>
+            <form id="modifAgenceForm" class="formPop">
+                {% csrf_token %}
+                <input type="hidden" id="IdAgence">
+                <label for="nom_agence">Nom de l'agence :</label>
+                <input type="text" id="nom_agence_updt" placeholder="Entrer le nom de l'agence" required>
+                <br>
+                <label for ="ville">Villes :</label>
+                <select name="ville" id="ville_updt" required>
+                    <option value="" disabled selected>Choisissez une ville</option>
+                    <option value="Antananarivo">Antananarivo</option>
+                    <option value="Antsirabe">Antsirabe</option>
+                    <option value="Diego">Diego</option>
+                    <option value="Fianarantsoa">Fianarantsoa</option>
+                    <option value="Mahajanga">Mahajanga</option>
+                    <option value="Toamasina">Toamasina</option>
+                    <option value="Toliara">Toliara</option>
+                </select>
+                <br>
+                <button type="submit">Enregistrer les modifications</button>
+            </form>
+        </div>
+    </div>
+
+    {% comment %} PopUpDelAgence {% endcomment %}
+
+    <div id="PopupDelAgence" class="modalConf">
+        <div class="modalConf-content">
+            <P>Confirmation de suppression</P>
+            <p class="subtext">Êtes-vous sûr de vouloir supprimer cette agence ?</p>
+            <div class="but_log">
+                <button id="confirmDelAgence">Confirmer</button>
+                <button id="cancelDelAgence">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} PopUp logout {% endcomment %}
+
+    <div id="PopupLogout" class="modalConf">
+        <div class="modalConf-content">
+            <p>Confirmer la déconnexion?</p>
+            <p class="subtext">Êtes-vous sûr de vouloir vous déconnecter ?</p>
+            <div class="but_log">
+                <button id="confirmLogout">Confirmer</button>
+                <button id="cancelLogout">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Contenu {% endcomment %}
+
+    <div class="det_other">
+        <div class="recentOrders">
+            <div class="cardHeader">
+                <h2>Liste des agences ARO</h2>
+                <a href="#" id="ajout_agence" class="btn"><i class="fas fa-plus"></i> Ajout agence</a>
+            </div>
+    
+            <table id="table-other">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom agence</th>
+                        <th>Ville</th>
+                        <th colspan="2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for agence in agences %}
+                        <tr>
+                            <td>{{ agence.id }}</td>
+                            <td>{{ agence.nom_agence }}</td>
+                            <td>{{ agence.ville }}</td>
+                            <td>
+                                <button class="btn-action btn-modif-agence" data-id="{{ agence.id }}" data-nom_agence="{{ agence.nom_agence }}" data-ville="{{ agence.ville }}">
+                                    <i class="fas fa-edit" style="pointer-events: none;"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn-action btn-del-agence" data-id="{{ agence.id }}">
+                                    <i class="fas fa-trash-alt" style="pointer-events: none;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock contenu %}
+    

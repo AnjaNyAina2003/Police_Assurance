@@ -1,0 +1,76 @@
+{% extends "Home.html" %}
+
+{% block contenu %}
+
+    {% comment %} PopUpAddPolice {% endcomment %}
+
+    <div id="PopupAddPolice" class="modal">
+        <div class="modal-content">
+            <span id="cancelAddPolice" class="close">&times;</span>
+            <h2>Generer une nouvelle police d'assurance</h2>
+            <form id="addPoliceForm" class="formPop">
+                {% csrf_token %}
+                <label for="num_compte_client">Numero compte client :</label>
+                <input type="text" id="num_compte_client" placeholder="Entrer le numero compte client" required>
+                <label for="branche">Branche d'assurance :</label>
+                <select name="branche" id="branche" required>
+                    <option id="defaultOption" selected disabled>Choisissez une branche</option>
+                    {% for branche in branches %}
+                        <option value="{{ branche.id }}">{{ branche.nom_branche }}</option>
+                    {% endfor %}
+                </select>
+                <label for="duree_couverture">Durée de couverture :</label>
+                <input type="number" id="duree_couverture" name="duree_couverture" placeholder="Durée de couverture (en mois)"  min="1" required>
+                <button type="submit">Generer une police d'assurance</button>
+            </form>
+        </div>
+    </div>
+
+    {% comment %} PopUp logout {% endcomment %}
+
+    <div id="PopupLogout" class="modalConf">
+        <div class="modalConf-content">
+            <p>Confirmer la déconnexion?</p>
+            <p class="subtext">Êtes-vous sûr de vouloir vous déconnecter ?</p>
+            <div class="but_log">
+                <button id="confirmLogout">Confirmer</button>
+                <button id="cancelLogout">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Contenu {% endcomment %}
+    <div class="det_other">
+        <div class="recentOrders">
+            <div class="cardHeader">
+                <h2>Liste des police d'assurance generer</h2>
+                <a href="#" id="genere_police" class="btn_Gpolice"><i class="fas fa-sync"></i> Generer une police d'assurance</a>
+            </div>
+    
+            <table id="table-Gpolice">
+                <thead>
+                    <tr>
+                        <td>N° Police</td>
+                        <td>N° Compte client</td>
+                        <td>Souscripteur</td>
+                        <td>Branche</td>
+                        <td>Agence</td>
+                        <td>Responsable</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for police in polices %}
+                        <tr>
+                            <td>{{ police.num_police }}</td>
+                            <td>{{ police.num_compte_client }}</td>
+                            <td>{{ police.client_nom }} {{ police.client_prenom }}</td>
+                            <td>{{ police.branche_nom }}</td>
+                            <td>{{ police.agence_nom }}</td>
+                            <td>{{ police.user_nom }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock contenu %}            

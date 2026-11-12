@@ -1,0 +1,176 @@
+{% extends "Home.html" %}
+
+{% block contenu %}
+
+    {% comment %} PopUpAddClient {% endcomment %}
+
+    <div id="PopupAddClient" class="modalClient">
+        <div class="modalClient-content">
+            <span id="cancelAddClient" class="close">&times;</span>
+            <h2>Ajouter un nouveau client</h2>
+            <form id="addClientForm">
+                {% csrf_token %}
+                <label for="nom_client">Nom du client :</label>
+                <input type="text" id="nom_client" placeholder="Entrer le nom du client" required>
+                <br>
+                <label for="prenom_client">Prenom du client :</label>
+                <input type="text" id="prenom_client" placeholder="Entrer le prenom du client" required>
+                <br>
+                <label for ="telephone">Telephone :</label>
+                <input type="text" id="telephone" placeholder="Entrer le numero de telephone" required>
+                <br>
+                <label for ="adresse">Adresse :</label>
+                <input type="text" id="adresse" placeholder="Entrer l'adresse du client" required>
+                <br>
+                <button type="submit">Ajouter le client</button>
+            </form>
+        </div>
+    </div>
+
+    {% comment %} PopUpModifClient {% endcomment %}
+    <div id="PopupModifClient" class="modalClient">
+        <div class="modalClient-content">
+            <span id="cancelModifClient" class="close">&times;</span>
+            <h2>Modifier le client</h2>
+            <form id="modifClientForm">
+                {% csrf_token %}
+                <label for="nom_client">Nom du client :</label>
+                <input type="text" id="nom_client_updt" placeholder="Entrer le nom du client" required>
+                <br>
+                <label for="prenom_client">Prenom du client :</label>
+                <input type="text" id="prenom_client_updt" placeholder="Entrer le prenom du client" required>
+                <br>
+                <label for ="telephone">Telephone :</label>
+                <input type="text" id="telephone_updt" placeholder="Entrer le numero de telephone" required>
+                <br>
+                <label for ="adresse">Adresse :</label>
+                <input type="text" id="adresse_updt" placeholder="Entrer l'adresse du client" required>
+                <br>
+                <button type="submit">Enregistrer les modifications</button>
+            </form>
+        </div>
+    </div>
+
+    {% comment %} PopupClientDetails {% endcomment %}
+    <div id="PopupClientDetails" class="modalDet">
+        <div class="modalDet-content">
+            <span class="close">&times;</span>
+            <h2>Résultat du recherche</h2>
+            <div class="details-container">
+                <div class="detail-row">
+                    <span class="detail-label">N° Compte:</span>
+                    <span id="detail-num-compte" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Nom:</span>
+                    <span id="detail-nom" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Prénom:</span>
+                    <span id="detail-prenom" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Téléphone:</span>
+                    <span id="detail-telephone" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Adresse:</span>
+                    <span id="detail-adresse" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date de création:</span>
+                    <span id="detail-date" class="detail-value"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    {% comment %} PopUpDelClient {% endcomment %}
+
+    <div id="PopupDelClient" class="modalConf">
+        <div class="modalConf-content">
+            <p>Confirmer la suppression</p>
+            <p class="subtext">Êtes-vous sûr de vouloir supprimer ce client ?</p>
+            <div class="but_log">
+                <button id="confirmDelClient">Confirmer</button>
+                <button id="cancelDelClient">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} PopUp logout {% endcomment %}
+
+    <div id="PopupLogout" class="modalConf">
+        <div class="modalConf-content">
+            <p>Confirmer la déconnexion?</p>
+            <p class="subtext">Êtes-vous sûr de vouloir vous déconnecter ?</p>
+            <div class="but_log">
+                <button id="confirmLogout">Confirmer</button>
+                <button id="cancelLogout">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Contenu {% endcomment %}
+    <div class="det_other">
+        <div class="recentOrders">
+            <div class="cardHeader">
+                <h2>Liste des clients</h2>
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="act_Wsearch">
+                    <form class="search" id="search-bar">
+                        <input type="search" placeholder="rechercher par n° Compte client ici..." name="q" class="search__input" value="{{ search_term }}">
+            
+                        <div class="search__button" id="search-button">
+                            <i class="fas fa-magnifying-glass search__icon"></i>
+                            <i class="fas fa-times search__close"></i>
+                        </div>
+                    </form>
+                    <a href="#" id="ajout_client" class="btn"><i class="fas fa-plus"></i> Ajout client</a>
+                </div>
+            </div>
+    
+            <table id="table-client">
+                <thead>
+                    <tr>
+                        <td>N° Compte client</td>
+                        <td>Souscripteur</td>
+                        <td>Telephone</td> 
+                        <td>Adresse</td>
+                        <td>Date de création</td>
+                        <th colspan="2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                        <tr>
+                            <td>{{ client.num_compte_client }}</td>
+                            <td>{{ client.nom_client }} {{client.prenom_client}}</td>
+                            <td>{{ client.telephone }}</td>
+                            <td>{{ client.adresse }}</td>
+                            <td>{{ client.date_creation }}</td>
+                            <td>
+                                <button class="btn-action btn-modif-client" data-id="{{ client.id }}" data-nom_client="{{ client.nom_client }}" data-prenom_client="{{ client.prenom_client }}" data-phone="{{ client.telephone }}" data-adresse="{{ client.adresse }}">
+                                    <i class="fas fa-edit" style="pointer-events: none;"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn-action btn-del-client" data-id="{{ client.id }}">
+                                    <i class="fas fa-trash-alt" style="pointer-events: none;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock contenu %}            

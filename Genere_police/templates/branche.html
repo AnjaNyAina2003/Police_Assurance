@@ -1,0 +1,108 @@
+{% extends 'Dashboard.html' %}
+
+{% block contenu %}
+
+    {% comment %} PopUpAddbranche {% endcomment %}
+
+    <div id="PopupAddBranche" class="modal">
+        <div class="modal-content">
+            <span id="cancelAddBranche" class="close">&times;</span>
+            <h2>Ajouter une branche</h2>
+            <form id="addBrancheForm" class="formPop">
+                {% csrf_token %}
+                <label for="nom_branche">Nom du branche :</label>
+                <input type="text" id="nom_branche" placeholder="Entrer le nom du branche" required>
+                <br>
+                <label for ="prefixe">Prefixe du branche :</label>
+                <input type="text" id="prefixe" placeholder="Entrer le prefixe du branche" required>
+                <br>
+                <button type="submit">Ajouter la branche</button>
+            </form>
+        </div>
+    </div>
+
+    {% comment %} PopUpModifbranche {% endcomment %}
+    <div id="PopupModifBranche" class="modal">
+        <div class="modal-content">
+            <span id="cancelModifBranche" class="close">&times;</span>
+            <h2>Modifier la branche</h2>
+            <form id="modifBrancheForm" class="formPop">
+                {% csrf_token %}
+                <input type="hidden" id="IdBranche">
+                <label for="nom_branche">Nom du branche :</label>
+                <input type="text" id="nom_branche_updt" placeholder="Entrer le nom du branche" required>
+                <br>
+                <label for ="prefixe">Prefixe du branche :</label>
+                <input type="text" id="prefixe_updt" placeholder="Entrer le prefixe du branche" required>
+                <br>
+                <button type="submit">Enregistrer les modifications</button>
+            </form>
+        </div>
+    </div>
+        
+    {% comment %} PopUpDelbranche {% endcomment %}
+
+    <div id="PopupDelBranche" class="modalConf">
+        <div class="modalConf-content">
+            <p>Confirmer la suppression</p>
+            <p class="subtext">Êtes-vous sûr de vouloir supprimer cette branche ?</p>
+            <div class="but_log">
+                <button id="confirmDelBranche">Confirmer</button>
+                <button id="cancelDelBranche">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} PopUp logout {% endcomment %}
+
+    <div id="PopupLogout" class="modalConf">
+        <div class="modalConf-content">
+            <p>Confirmer la déconnexion?</p>
+            <p class="subtext">Êtes-vous sûr de vouloir vous déconnecter ?</p>
+            <div class="but_log">
+                <button id="confirmLogout">Confirmer</button>
+                <button id="cancelLogout">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Contenu {% endcomment %}
+    <div class="det_other">
+        <div class="recentOrders">
+            <div class="cardHeader">
+                <h2>Liste des branches d'assurance</h2>
+                <a href="#" id="ajout_sect" class="btn"><i class="fas fa-plus"></i> Ajout branche</a>
+            </div>
+    
+            <table id="table-other">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom Branche</th>
+                        <th>Prefixe</th>
+                        <th colspan="2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for branche in branches %}
+                        <tr>
+                            <td>{{ branche.id }}</td>
+                            <td>{{ branche.nom_branche }}</td>
+                            <td>{{ branche.prefixe }}</td>
+                            <td>
+                                <button class="btn-action btn-modif-sect" data-id="{{ branche.id }}" data-nom_branche="{{ branche.nom_branche }}" data-prefixe="{{ branche.prefixe }}">
+                                    <i class="fas fa-edit" style="pointer-events: none;"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn-action btn-del-sect" data-id="{{ branche.id }}">
+                                    <i class="fas fa-trash-alt" style="pointer-events: none;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock contenu %}            

@@ -1,0 +1,101 @@
+{% extends 'Dashboard.html' %}
+
+{% block contenu %}
+    {% comment %} PopUp Modification User {% endcomment %}
+        
+    <div id="PopupModif" class="modal">
+        <div class="modal-content">
+            <span id="cancelModif" class="close">&times;</span>
+            <h2>Modifier l'utilisateur</h2>
+            <form id="modifForm">
+                {% csrf_token %}
+                <input type="hidden" id="IdUser">
+                <label for="email">Email :</label>
+                <input type="email" id="email" placeholder="Entrer votre email" required>
+                <br>
+                <label for="username">Nom d'utilisateur :</label>
+                <input type="text" id="username" placeholder="Entrer votre nom d'utilisateur" required>
+                <br>
+                <label for="agence">Agence :</label>
+                <select id="agence" required>
+                    {% for agence in agences %}
+                        <option value="{{ agence.id }}" {% if agence.id == list.agence_id %}selected{% endif %}>
+                            {{ agence.nom_agence }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <br>
+                <button type="submit">Enregistrer les modifications</button>
+            </form>
+        </div>
+    </div>        
+    {% comment %} PopUp suppression User {% endcomment %}
+
+    <div id="PopupDel" class="modalConf">
+        <div class="modalConf-content">
+            <p>Confirmer la suppression</p>
+            <p class="subtext">Êtes-vous sûr de vouloir supprimer l'utilisateur ?</p>
+            <div class="but_log">
+                <button id="confirmDelete">Confirmer</button>
+                <button id="cancelDelete">Annuler</button>
+            </div>
+        </div>
+    </div>
+    
+    {% comment %} PopUp logout {% endcomment %}
+
+    <div id="PopupLogout" class="modalConf">
+        <div class="modalConf-content">
+            <p>Confirmer la déconnexion?</p>
+            <p class="subtext">Êtes-vous sûr de vouloir vous déconnecter ?</p>
+            <div class="but_log">
+                <button id="confirmLogout">Confirmer</button>
+                <button id="cancelLogout">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Contenu {% endcomment %}
+
+    <div class="det_other">
+        <div class="recentOrders">
+            <div class="cardHeader">
+                <h2>Liste des Utilisateurs</h2>
+            </div>
+        
+            <table id="table-user">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Agence</th>
+                        <th>Rôle</th>
+                        <th colspan="2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for list in users %}
+                        <tr>
+                            <td>{{ list.id }}</td>
+                            <td>{{ list.username }}</td>
+                            <td>{{ list.email }}</td>
+                            <td>{{ list.agence }}</td>
+                            <td>{{ list.role }}</td>
+                            <td>
+                                <button class="btn-action btn-modif" data-id="{{ list.id }}" data-username="{{ list.username }}" data-email="{{ list.email }}" data-agence="{{ list.agence }}" data-agence-id="{{ list.agence_id }}">
+                                    <i class="fas fa-edit" style="pointer-events: none;"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn-action btn-del" data-id="{{ list.id }}">
+                                    <i class="fas fa-trash-alt" style="pointer-events: none;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock contenu %}

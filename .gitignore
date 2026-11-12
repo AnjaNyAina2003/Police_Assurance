@@ -1,0 +1,6 @@
+api.http
+env/
+.env
+media/
+.pytest_cache
+__pycache__/

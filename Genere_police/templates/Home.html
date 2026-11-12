@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Home</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link href='{% static "css/home.css" %}' rel='stylesheet'>
+        <link href='{% static "css/alert.css" %}' rel='stylesheet'>
+        <link href='{% static "css/all.min.css" %}' rel='stylesheet'>
+    </head>
+    <body>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="custom-notification custom-{% if message.tags %}{{ message.tags }}{% endif %}">
+                    <div class="custom-div-notif">
+                        <span class="custom-icon">
+                            {% if message.tags == 'success' %}
+                                <i class="fa-solid fa-check"></i>
+                            {% elif message.tags == 'error' %}
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            {% else %}
+                                <i class="fa-regular fa-comment"></i>
+                            {% endif %}
+                        </span>
+                        <div>
+                            <h3>{{ message.tags|capfirst }}</h3>
+                            <p>{{ message }}</p>
+                        </div>
+                        <span class="custom-close-btn">
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="dash-container">
+            <div class="navigation">
+                <ul>
+                    <li>
+                        <a href="#">
+                            <div class="div-logo-arodash">
+                                <img src="{% static 'img/logo_ARO.png' %}" class="logo-arodash">
+                            </div>
+                            <span class="globTitle">Police Assurance</span>
+                        </a>
+                    </li>
+    
+                    <li data-menu="home">
+                        <a href="{% url 'home' %}">
+                            <span class="icon">
+                                <i class="fas fa-home"></i>
+                            </span>
+                            <span class="title">Acceuil</span>
+                        </a>
+                    </li>
+    
+                    <li data-menu="client">
+                        <a href="{% url 'client' %}">
+                            <span class="icon">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <span class="title">Clients</span>
+                        </a>
+                    </li>
+    
+                    <li data-menu="police">
+                        <a href="{% url 'police' %}">
+                            <span class="icon">
+                                <i class="fa-solid fa-file-contract"></i>
+                            </span>
+                            <span class="title">Police d'assurance</span>
+                        </a>
+                    </li>
+    
+                    <li data-menu="historique">
+                        <a href="{% url 'historique' %}">
+                            <span class="icon">
+                                <i class="fa-solid fa-book"></i>
+                            </span>
+                            <span class="title">Historique</span>
+                        </a>
+                    </li>
+    
+                    <li data-menu="logout">
+                        <a href="#">
+                            <span class="icon">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            </span>
+                            <span id="logoutButton" class="logoutButton title">Déconnexion</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="main">
+                <div class="topbar">
+                    <div class="toggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+    
+                    <div class="user" id="user-menu">
+                        {% if user.photo %}
+                            <img src="{{ user.photo }}" alt="Photo de profil" id="profile-pic" class="profile-pic">
+                        {% else %}
+                            <img src="{% static 'img/default_user.png' %}" alt="Photo par défaut" id="profile-pic" class="profile-pic">
+                        {% endif %}
+                        <div class="dropdown-menu" id="dropdown-menu">
+                            <div class="profile-info">
+                                <div class="profile-pic-container">
+                                    {% if user.photo %}
+                                        <img src="{{ user.photo }}" alt="Photo de profil" id="dropdown-profile-pic">
+                                    {% else %}
+                                        <img src="{% static 'img/default_user.png' %}" alt="Photo par défaut" id="dropdown-profile-pic">
+                                    {% endif %}
+                                </div>
+                                <div class="info">
+                                    <div>
+                                        <p class="name">
+                                            {{ user.username }}
+                                        </p>
+                                        <p class="function">
+                                            {{ user.role }} 
+                                        </p>
+                                    </div>
+                                    <div class="stats">
+                                        <p>{{user.agence.agence_only}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="request" type="button">
+                                Modifier le Profil
+                                <i class="fa-solid fa-pencil"></i>
+                            </button>
+                            <!-- Popup pour modifier le profil -->
+                            <div id="PopupModifProfil" class="modalProfil">
+                                <div class="modalProfil-content">
+                                    <h2>Modifier le Profil</h2>
+                                    <form id="modifProfilForm" method="post" enctype="multipart/form-data" action="{% url 'upload_user_photo' user.id %}" data-user-id="{{ user.id }}">
+                                        {% csrf_token %}
+                                        <div class="cont-pic_updt"> 
+                                            {% if user.photo %}
+                                                <img src="{{ user.photo }}" alt="Photo de profil" id="dropdown-profile-pic" class="profile-pic_updt">
+                                            {% else %}
+                                                <img src="{% static 'img/default_user.png' %}" alt="Photo par défaut" id="dropdown-profile-pic" class="profile-pic_updt">
+                                            {% endif %}
+                                        </div>
+                                        <label for="photo" class="edit-icon">
+                                            <i class="fa-solid fa-camera"></i>
+                                        </label>
+                                        <input type="file" id="photo" name="photo" accept="image/*" hidden>
+                                        <div class="form-group">
+                                            <label for="username">Nom d'utilisateur</label>
+                                            <input type="text" id="profil_username" name="username" value="{{ user.username }}">
+                                        </div>
+                                        <div class="but_log">
+                                            <button type="submit">Enregistrer</button>
+                                            <button type="button" id="cancelModifProfil">Annuler</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- ======================= Carte Info ================== -->
+                <div class="cardBox">
+                    <div class="card">
+                        <div>
+                            <div class="numbers">{{ nombre_clients }}</div>
+                            <div class="cardName">Clients</div>
+                        </div>
+    
+                        <div class="iconBx">
+                            <i class="fa-regular fa-user"></i>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div>
+                            <div class="numbers">{{ nombre_polices }}</div>
+                            <div class="cardName">Police generer</div>
+                        </div>
+    
+                        <div class="iconBx">
+                            <i class="fa-solid fa-file-contract"></i>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div>
+                            <div class="numbers" id="current-time"></div>
+                            <div class="cardName" id="current-date"></div>
+                        </div>
+    
+                        <div class="iconBx">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- ================ Liste Polices d'assurance générées ================= -->
+                {% block contenu %}
+
+                    {% comment %} PopUp logout {% endcomment %}
+    
+                    <div id="PopupLogout" class="modalConf">
+                        <div class="modalConf-content">
+                            <p>Confirmer la déconnexion?</p>
+                            <p class="subtext">Êtes-vous sûr de vouloir vous déconnecter ?</p>
+                            <div class="but_log">
+                                <button id="confirmLogout">Confirmer</button>
+                                <button id="cancelLogout">Annuler</button>
+                            </div>
+                        </div>
+                    </div>
+    
+                    {% comment %}  {% endcomment %}
+                    <div class="details">
+                        <div class="recentOrders">
+                            <div class="cardHeader">
+                                <h2>Polices d'assurance récemment générées</h2>
+                                {% comment %} <a href="#" class="allPolbtn">Voir tout</a> {% endcomment %}
+                            </div>
+                    
+                            <table id="table-polices">
+                                <thead>
+                                    <tr>
+                                        <td>N° Police</td>
+                                        <td>N° Compte client</td>
+                                        <td>Souscripteur</td>
+                                        <td>Agence</td>
+                                    </tr>
+                                </thead>
+                    
+                                <tbody>
+                                    {% for police in polices %}
+                                        <tr>
+                                            <td>{{ police.num_police }}</td>
+                                            <td>{{ police.num_compte_client }}</td>
+                                            <td>{{ police.client_nom }} {{ police.client_prenom }}</td>
+                                            <td>{{ police.agence_nom }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    
+                        <!-- ================= Clients créer Récemment ================ -->
+                        <div class="recentCustomers">
+                            <div class="cardHeader">
+                                <h2>Clients Récents</h2>
+                            </div>
+                    
+                            <table>
+                                {% for list in clients %}
+                                    <tr>
+                                        {% comment %} <td width="60px">
+                                            <div class="imgBx"><img src="{% static 'img/customer01.jpg' %}" alt=""></div>
+                                        </td> {% endcomment %}
+                                        <td>
+                                            <h4>{{ list.num_compte_client }} <br> <span>{{ list.nom_client }} {{list.prenom_client}}</span></h4>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                {% endblock contenu %}
+            </div>
+        </div>
+
+        <script src='{% static "js/home.js"%}'></script>
+        <script src='{% static "js/Scripts.js"%}'></script>
+        <script src='{% static "js/alert.js" %}'></script>
+        <script src='{% static "js/jquery.min.js"%}'></script>
+
+    </body>
+</html>

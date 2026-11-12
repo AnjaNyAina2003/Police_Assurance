@@ -1,0 +1,107 @@
+.custom-notifications {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    padding: 2em;
+    position: fixed;
+    top: 0;
+    left: 83%;
+    width: 100%;
+    max-width: 470px;
+    transform: translateX(-50%);
+    z-index: 100001;
+}
+
+.custom-notification {
+    background: linear-gradient(
+        90deg, #02244b 0%, #232631 40%
+    );
+    padding: 1em;
+    border-radius: 10px;
+    color: #898c97;
+    width: 30%;
+    position: fixed;
+    z-index: 100001;
+    top: 25px;
+    right: 12px;
+}
+
+.custom-notification span {
+    font-size: 1.7em;
+}
+
+.custom-div-notif {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    width: 100%;
+    position: relative;
+}
+
+.custom-close-btn {
+    cursor: pointer;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.custom-notification h3 {
+    color: #fff;
+    margin-bottom: 0.2em;
+}
+
+.custom-icon {
+    width: 1.5em;
+    height: 1.5em;
+    color: #218afa;
+    background: #042c5c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.custom-success {
+    background: linear-gradient(
+        90deg, #084431 0%, #232631 40%
+    );
+}
+
+.custom-success .custom-icon {
+    color: #26f2b1;
+    background: #0a4f3a;
+}
+
+.custom-error {
+    background: linear-gradient(
+        90deg, #480607 0%, #232631 40%
+    );
+}
+
+.custom-error .custom-icon {
+    color: #ff5c5a;
+    background: #390e0e;
+}
+
+.custom-btn {
+    border: none;
+    cursor: pointer;
+    background: cadetblue;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    padding: 0.5em 1.5em;
+    margin: 1.5em;
+}
+
+.custom-fade-out {
+    animation: customFadeOut 600ms ease-out forwards;
+}
+
+@keyframes customFadeOut {
+    100% {
+        opacity: 0;
+    }
+}

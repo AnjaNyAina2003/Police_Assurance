@@ -1,0 +1,103 @@
+{% extends "Home.html" %}
+
+{% block contenu %}
+
+    {% comment %} PopUp logout {% endcomment %}
+
+    <div id="PopupLogout" class="modalConf">
+        <div class="modalConf-content">
+            <p>Confirmer la déconnexion?</p>
+            <p class="subtext">Êtes-vous sûr de vouloir vous déconnecter ?</p>
+            <div class="but_log">
+                <button id="confirmLogout">Confirmer</button>
+                <button id="cancelLogout">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Popup Détails Police {% endcomment %}
+    <div id="PopupDetailsPolice" class="modalDet">
+        <div class="modalDet-content">
+            <span class="close">&times;</span>
+            <h2>Détails de la Police d'Assurance</h2>
+            <div class="details-container">
+                <div class="detail-row">
+                    <span class="detail-label">N° Police:</span>
+                    <span id="detail-num-police" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">N° Compte client:</span>
+                    <span id="detail-num-compte" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Souscripteur:</span>
+                    <span id="detail-souscripteur" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Branche:</span>
+                    <span id="detail-branche" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Agence:</span>
+                    <span id="detail-agence" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Durée de couverture:</span>
+                    <span id="detail-duree" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date de génération:</span>
+                    <span id="detail-date-gen" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date d'expiration:</span>
+                    <span id="detail-date-exp" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Statut:</span>
+                    <span id="detail-status" class="detail-value"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Contenu {% endcomment %}
+    <div class="det_other">
+        <div class="recentOrders">
+            <div class="cardHeader">
+                <h2>Historique des polices d'assurance</h2>
+            </div>
+    
+            <table id="table-other">
+                <thead>
+                    <tr>
+                        <td>N° Police</td>
+                        <td>N° Compte client</td>
+                        <td>Souscripteur</td>
+                        <td>Durée de couverture</td>
+                        <td>Date de generation</td>
+                        <td>Status</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for police in polices %}
+                        <tr>
+                            <td>{{ police.num_police }}</td>
+                            <td>{{ police.num_compte_client }}</td>
+                            <td>{{ police.client_nom }} {{ police.client_prenom }}</td>
+                            <td>{{ police.duree_couverture }} mois</td>
+                            <td>{{ police.date_generation }}</td>
+                            <td>{{ police.status }}</td>
+                            <td>
+                                <button class="btn-action btn-view-police" data-num-police="{{ police.num_police }}" data-num-compte="{{ police.num_compte_client }}" data-client-nom="{{ police.client_nom }}" data-client-prenom="{{ police.client_prenom }}" data-branche="{{ police.branche_nom }}" data-agence="{{ police.agence_nom }}" data-duree="{{ police.duree_couverture }}" data-date-gen="{{ police.date_generation }}" data-date-exp="{{ police.date_expiration }}" data-status="{{ police.status }}">
+                                    <i class="fa-solid fa-eye" style="pointer-events: none;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock contenu %}

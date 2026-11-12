@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Login</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link href='{% static "css/Styles.css" %}' rel='stylesheet'>
+        <link href='{% static "css/alert.css" %}' rel='stylesheet'>
+        <link href='{% static "css/all.min.css" %}' rel='stylesheet'>
+    </head>
+    <body class="global-log">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="custom-notification custom-{% if message.tags %}{{ message.tags }}{% endif %}">
+                    <div class="custom-div-notif">
+                        <span class="custom-icon">
+                            {% if message.tags == 'success' %}
+                                <i class="fa-solid fa-check"></i>
+                            {% elif message.tags == 'error' %}
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            {% else %}
+                                <i class="fa-regular fa-comment"></i>
+                            {% endif %}
+                        </span>
+                        <div>
+                            <h3>{{ message.tags|capfirst }}</h3>
+                            <p>{{ message }}</p>
+                        </div>
+                        <span class="custom-close-btn">
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="container">
+            <div class="form-box login">
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <h1 class="title">Login</h1>
+                    <div class="input-box">
+                        <i class="fa-solid fa-at"></i>
+                        <input type="email" name="email" id="log-email" placeholder="Entrer votre email" value="{{email}}" required>
+                    </div>
+                    <div class="input-box">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="password" id="log-password" placeholder="Entrer votre mot de passe" required>
+                        <i class="fa-solid fa-eye-slash toggle-password" data-target="log-password"></i>
+                    </div>
+
+                    {% comment %} {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            <p style="color: red;">
+                                {{ message }}
+                            </p>
+                        {% endif %}
+                    {% endfor %} {% endcomment %}
+
+                    <br> 
+                    <button type="submit" class="btn">Se connecter</button>
+                </form>
+            </div>
+
+            <div class="form-box register">
+                <form method="post" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <h1>Inscription</h1>
+                    <div class="input-box">
+                        <i class="fa-solid fa-at"></i>
+                        <input type="email" name="email" id="email" placeholder="Entrer votre email" value="{{email}}" required>
+                    </div>
+                    <div class="input-box">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" name="username" id="username" placeholder="Entrer votre username" value="{{username}}" required>
+                    </div>
+                    <div class="input-box">
+                        <i class="fa-solid fa-building"></i>
+                        <select name="agence" id="agence" required>
+                            {% for agence in agences %}
+                                <option value="{{ agence.id }}">{{ agence.nom_agence }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="password" id="password" placeholder="Entrer votre mot de passe" required>
+                        <i class="fa-solid fa-eye-slash toggle-password" data-target="password"></i>
+                    </div>
+                    <div class="input-box">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <input type="password" name="verif" id="verif" placeholder="Retaper votre mot de passe" required>
+                        <i class="fa-solid fa-eye-slash toggle-password" data-target="verif"></i>
+                    </div>
+                    <button type="submit" class="btn">S'inscrire</button>
+                </form>
+            </div>
+            <div class="toggle-box">
+                <div class="toggle-panel toggle-left">
+                    <div class="div-logo-aroLog">
+                        <img src="{% static 'img/logo_ARO.png' %}" class="logo-aroLog">
+                    </div>
+                    <p>Pas encore de compte?</p>
+                    <button class="btn register-btn">Créer un compte</button>
+                </div>
+    
+                <div class="toggle-panel toggle-right">
+                    <div class="div-logo-aroLog">
+                        <img src="{% static 'img/logo_ARO.png' %}" class="logo-aroLog">
+                    </div>
+                    <p>Voulez-vous vous connecter?</p>
+                    <button class="btn login-btn">Se connecter</button>
+                </div> 
+            </div>
+        </div>
+
+        <script src='{% static "js/Scripts.js" %}'></script>
+        <script src='{% static "js/alert.js" %}'></script>
+
+    </body>
+</html>
